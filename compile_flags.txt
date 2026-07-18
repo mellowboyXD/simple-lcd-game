@@ -1,0 +1,1 @@
+-I"C:\Users\Laptop\Desktop\Apps\avr8-gnu-toolchain-win32_x86_64\avr\include\stdint.h"
