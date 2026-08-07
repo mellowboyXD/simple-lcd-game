@@ -11,11 +11,11 @@
 #define TX_LED PD5
 #define RX_LED PD4
 
-#define ASSERT_VALID_PIN assert_valid_pin
+#define ASSERT_VALID_PIN assert_valid_pin(pin)
 
 /* returns the port associated with the specified pin
  * returns PB5 which is LED_BUILTIN in case of invalid pin */
-uint8_t pport(uint8_t pin); // can I just crash?
+uint8_t pin_bit(uint8_t pin); // can I just crash?
 
 // literally crashed if not a valid pin
 // I wonder what would happen if I inlined this?
@@ -23,6 +23,9 @@ uint8_t pport(uint8_t pin); // can I just crash?
 void assert_valid_pin(uint8_t pin);
 
 // returns the appropriate data direction register
-uint8_t ddrx(uint8_t pin);
+volatile uint8_t *ddrx(uint8_t pin);
+
+// returns the appropriate port
+volatile uint8_t *portx(uint8_t pin);
 
 #endif // PIN_MAPPINGS_H

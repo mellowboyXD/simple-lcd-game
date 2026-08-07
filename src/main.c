@@ -1,15 +1,17 @@
+#include "wiring.h"
 #include <avr/io.h>
 #include <util/delay.h>
 
 int main()
 {
-        DDRB |= (1 << PD7);
+        const uint8_t pin = 8;
+        pin_mode(pin, OUTPUT);
 
         while(1) {
-                PORTB |= (1 << PD7);
+                set(pin, HIGH);
                 _delay_ms(100);
 
-                PORTB &= ~(1 << PD7);
+                set(pin, LOW);
                 _delay_ms(100);
         }
 
