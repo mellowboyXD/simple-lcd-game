@@ -13,7 +13,7 @@ SRC_DIRS := ./src
 
 # Find all the C and C++ files we want to compile
 # Note the single quotes around the * expressions. The shell will incorrectly expand these otherwise, but we want to send the * directly to the find command.
-SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -name '*.c')
+SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c')
 
 # Prepends BUILD_DIR and appends .o to every src file
 # As an example, ./your_dir/hello.cpp turns into ./build/./your_dir/hello.cpp.o
@@ -32,10 +32,10 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # These files will have .d instead of .o as the output.
 CPPFLAGS := $(INC_FLAGS) -Os -MMD -MP -DF_CPU=$(FREQ) -mmcu=$(DEVICE) -I./include/
 
+# The final build step.
 $(BUILD_DIR)/$(TARGET_EXEC).hex: $(BUILD_DIR)/$(TARGET_EXEC)
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
-# The final build step.
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CXX) -mmcu=$(DEVICE) $(OBJS) -o $@ $(LDFLAGS)
 
