@@ -1,20 +1,15 @@
-#include "wiring.h"
+#include "lcd.h"
 #include <avr/io.h>
 #include <util/delay.h>
 
 int main()
 {
-        const uint8_t pin = 8;
-        pin_mode(pin, OUTPUT);
+	lcd_init(FALSE, 2, 11, 12, 10, 1, 2, 3, 4, 5, 6, 7, 8);
 
-        while(1) {
-                set(pin, HIGH);
-                _delay_ms(100);
+        lcd_swrite("hello world! he");
 
-                set(pin, LOW);
-                _delay_ms(100);
-        }
+	while (1) {
+	}
 
-        return 0;
+	return 0;
 }
-
