@@ -13,4 +13,11 @@ void pin_mode(uint8_t pin, enum io_mode_t mode);
 // digitalWrite equivalent
 void set(uint8_t pin, enum voltage_mode_t mode);
 
+// toggles a pin on and off
+void toggle(uint8_t pin);
+
+// provides a basic button utility with a default debounce delay of 1000us
+// returns 1 when button is pressed, 0 when not pressed
+uint8_t debounce(uint8_t button_pin);
+
 #endif // WIRING_H
