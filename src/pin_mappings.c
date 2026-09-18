@@ -75,3 +75,17 @@ volatile uint8_t *portx(uint8_t pin)
 
 	return NULL;
 }
+
+volatile uint8_t *pinx(uint8_t pin)
+{
+        ASSERT_VALID_PIN;
+
+        if (pin < 8)
+                return &PIND;
+        if (pin < 14)
+                return &PINB;
+        if (pin < 20)
+                return &PIND;
+
+        return NULL;
+}

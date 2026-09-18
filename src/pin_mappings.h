@@ -28,4 +28,7 @@ volatile uint8_t *ddrx(uint8_t pin);
 // returns the appropriate port
 volatile uint8_t *portx(uint8_t pin);
 
+// return the input register for the appropriate pin
+volatile uint8_t *pinx(uint8_t pin);
+
 #endif // PIN_MAPPINGS_H

@@ -3,6 +3,6 @@
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(*arr))
 
-typedef enum {FALSE, TRUE} bool_t;
+typedef enum {FALSE=0, TRUE=1} bool_t;
 
 #endif // UTILS_H
