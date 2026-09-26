@@ -1,6 +1,7 @@
 #include "lcd.h"
 #include "utils.h"
 #include "wiring.h"
+#include <stddef.h>
 #include <util/delay.h>
 
 static uint8_t rs_pin = 0;
@@ -23,7 +24,7 @@ static void enable_pulse()
 	set(e_pin, HIGH);
 	_delay_us(1);
 	set(e_pin, LOW);
-	_delay_us(100); // commands need >37us to settle
+	_delay_us(40); // commands need >37us to settle
 }
 
 static void write_4_bits(uint8_t value)
@@ -87,13 +88,13 @@ static void begin(uint8_t rows, uint8_t cols, uint8_t char_size)
 		pin_mode(data_pins[i], OUTPUT);
 	}
 
-	_delay_us(50000);
+	_delay_us(5000);
 	set(rs_pin, LOW);
 	set(e_pin, LOW);
 
 	if (display_function & LCD_8BIT_MODE) {
 		command(LCD_FUNCTION_SET | display_function);
-		_delay_us(50000);
+		_delay_us(5000);
 
 		command(LCD_FUNCTION_SET | display_function);
 		_delay_us(200);
@@ -101,15 +102,15 @@ static void begin(uint8_t rows, uint8_t cols, uint8_t char_size)
 		command(LCD_FUNCTION_SET | display_function);
 	} else {
 		write_4_bits(0x03);
-		_delay_us(50000);
+		_delay_us(4500);
 
 		write_4_bits(0x03);
-		_delay_us(50000);
+		_delay_us(5000);
 
 		write_4_bits(0x03);
 		_delay_us(200);
 
-		write_4_bits(0x20);
+		write_4_bits(0x02);
 	}
 
 	command(LCD_FUNCTION_SET | display_function);
@@ -176,7 +177,7 @@ void lcd_no_display()
 void lcd_cursor()
 {
 	display_mode |= LCD_CURSOR_ON;
-	command(LCD_ENTRY_SET | display_mode);
+	command(LCD_DISPLAY_CONTROL_SET | display_mode);
 }
 
 void lcd_cursor_blink()
@@ -194,7 +195,7 @@ void lcd_no_cursor_blink()
 void lcd_no_cursor()
 {
         display_mode &= ~LCD_CURSOR_OFF;
-        command(LCD_ENTRY_SET | display_mode);
+        command(LCD_DISPLAY_CONTROL_SET | display_mode);
 }
 
 void lcd_write(uint8_t value)
@@ -215,4 +216,19 @@ void lcd_swrite(const char *str)
                 lcd_write(*str);
                 str++;
         }
+}
+
+void lcd_set_cursor(uint8_t col, uint8_t row)
+{
+        const size_t max_lines = sizeof(row_offsets) / sizeof(*row_offsets);
+
+        if (row >= max_lines) {
+                row = max_lines - 1;
+        }
+
+        if (row >= num_lines) {
+                row = num_lines - 1;
+        }
+
+        command(LCD_SETDDRAM_ADDR | (col + row_offsets[row]));
 }

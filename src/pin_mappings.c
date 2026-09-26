@@ -85,7 +85,7 @@ volatile uint8_t *pinx(uint8_t pin)
         if (pin < 14)
                 return &PINB;
         if (pin < 20)
-                return &PIND;
+                return &PINC;
 
         return NULL;
 }

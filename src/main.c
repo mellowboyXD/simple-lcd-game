@@ -1,30 +1,23 @@
+
+#include "lcd.h"
 #include "utils.h"
-#include <avr/io.h>
-#include <avr/sfr_defs.h>
-#include <util/delay.h>
 
-#include "wiring.h"
-
-#define BUTTON_PIN 2
-#define OUTPUT_PIN 5
+#define RS 1
+#define RW 2
+#define E  3
+#define D4 8
+#define D5 9
+#define D6 10
+#define D7 11
 
 int main()
 {
-	pin_mode(BUTTON_PIN, INPUT);
-	set(BUTTON_PIN, HIGH); // enable internal pull-up resistor
 
-	pin_mode(OUTPUT_PIN, OUTPUT);
-	bool_t button_pressed = FALSE;
+        lcd_init(TRUE, 2, RS, RW, E, D4, D5, D6, D7, 0, 0, 0, 0);
+
+        lcd_swrite("hello!");
 
 	while (TRUE) {
-		if (debounce(BUTTON_PIN)) {
-			if (button_pressed == FALSE) {
-				toggle(OUTPUT_PIN);
-				button_pressed = TRUE;
-			}
-		} else {
-			button_pressed = FALSE;
-		}
 	}
 
 	return 0;
